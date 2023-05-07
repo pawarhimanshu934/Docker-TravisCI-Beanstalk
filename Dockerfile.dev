@@ -1,0 +1,25 @@
+FROM node:alpine as react
+WORKDIR /app
+COPY ./package.json ./
+RUN npm install
+COPY ./ ./
+CMD [ "npm", "run", "start" ]
+
+
+# We can have mutiple blocks in a single docker file. Everytime time you write a new FROM tag, the previous block get completed and new block starts.
+# Advantage of having mutiple block is, you can take the output of one block and use it in another block.
+
+#uncomment this and run below command on terminal to run your react docker app on nginx server and change line no 6 from 
+# CMD [ "npm", "run", "start" ] to  CMD [ "npm", "run", "build" ].
+# commands : docker build -f Dockerfile.dev -t myreact .; docker run -p 3000:80 myreact
+
+# -----------------
+
+# FROM nginx
+# COPY --from=react /app/build /usr/share/nginx/html
+# EXPOSE 80
+
+#------------------
+
+# 'as' can be used to alias your base image.
+# '—from=react' was used to take files from previous block named react.
